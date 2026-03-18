@@ -7,7 +7,7 @@ import Header from '@/components/Header';
 import SearchBar from '@/components/SearchBar';
 import StoryList from '@/components/StoryList';
 import Pagination from '@/components/Pagination';
-import LoadingSpinner from '@/components/LoadingSpinner';
+import SkeletonCard from '@/components/SkeletonCard';
 
 interface BookmarksResponse {
   bookmarks: {
@@ -65,8 +65,9 @@ export default function BookmarksPage() {
       <main className="max-w-3xl mx-auto px-4 py-4">
         <h1 className="text-base font-semibold text-gray-700 mb-4">Bookmarks</h1>
         <SearchBar onSearch={handleSearch} placeholder="search bookmarks..." />
-        {loading && <LoadingSpinner />}
-        {!loading && data && (
+        {loading ? (
+          <div>{Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)}</div>
+        ) : (
           <>
             {stories.length === 0 && search && (
               <p className="text-gray-400 text-sm py-8 text-center">no results for &quot;{search}&quot;</p>
@@ -74,7 +75,7 @@ export default function BookmarksPage() {
             {stories.length === 0 && !search && (
               <p className="text-gray-400 text-sm py-8 text-center">no bookmarks yet</p>
             )}
-            {stories.length > 0 && (
+            {stories.length > 0 && data && (
               <>
                 <StoryList stories={stories} />
                 <Pagination

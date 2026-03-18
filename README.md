@@ -18,8 +18,14 @@ A Hacker News client with AI-powered discussion summaries. Browse stories, save 
 - ✅ Bookmark model (Mongoose schema with text index)
 - ✅ Bookmark CRUD operations (save, remove, search)
 - ✅ BookmarkContext for global state management
-- ✅ Optimistic UI updates for bookmarks
+- ✅ Instant bookmark feedback (updates UI before server confirms)
 - ✅ Bookmarks page with search and pagination
+- ✅ Modular AI provider pattern (swap LLMs with one import)
+- ✅ Google Gemini Flash integration
+- ✅ Summarize Discussion button on story pages
+- ✅ Display key points, sentiment, and summary
+- ✅ Skeleton loading states for better UX
+- ✅ Improved comment tree UI with nested indentation and HTML support
 
 ## Quick Start
 
@@ -44,13 +50,14 @@ Get a free Gemini API key at https://aistudio.google.com
 - ✅ Save/remove bookmarks
 - ✅ View bookmarked stories
 - ✅ Search bookmarks by title or author
-- [ ] AI summaries
+- ✅ AI-powered discussion summaries (key points, sentiment, summary)
 
 ## Tech Stack
 
 - **Frontend:** Next.js 15 + TypeScript + Tailwind CSS + Lucide Icons
 - **Backend:** Express 5 + TypeScript
 - **Database:** MongoDB + Mongoose 9 (with text index for search)
+- **AI:** Google Gemini Flash
 - **Infrastructure:** Docker Compose
 - **Code Quality:** Prettier
 
@@ -63,12 +70,13 @@ Get a free Gemini API key at https://aistudio.google.com
 │   Port 3000     │      │   Port 5000     │      │   Port 27017    │
 └─────────────────┘      └─────────────────┘      └─────────────────┘
                                   │
-                                  │ HTTPS
-                                  ▼
-                         ┌─────────────────┐
-                         │   Hacker News   │
-                         │   Firebase API  │
-                         └─────────────────┘
+                       ┌──────────┼──────────┐
+                       │ HTTPS    │          │
+                       ▼          ▼          ▼
+            ┌──────────────────┐  ┌─────────────────┐
+            │  Hacker News     │  │  Gemini Flash   │
+            │  Firebase API    │  │   (Google AI)   │
+            └──────────────────┘  └─────────────────┘
 ```
 
 ## Key Features Implemented
@@ -77,6 +85,22 @@ Get a free Gemini API key at https://aistudio.google.com
 
 - Save stories to MongoDB with unique hnId index
 - Full-text search across title and author
-- Optimistic UI (bookmarks save instantly in UI, revert if API fails)
+- Instant bookmark feedback (updates UI before server confirms)
 - Dedicated bookmarks page with pagination
 - Search debouncing for performance
+
+### AI Discussion Summaries
+
+- Modular AI provider pattern (easily swap Gemini for Claude, GPT-4, etc.)
+- Summarize any story's comment thread
+- Returns: key points, overall sentiment (positive/negative/mixed/neutral), summary
+- Skeleton loading states while AI processes
+- Display results in clean, readable format
+
+### UI/UX Improvements
+
+- Comment tree with collapsible threads
+- HTML support in comments (better formatting)
+- Nested indentation for easy reading
+- Skeleton loaders for all data fetching
+- Smooth transitions and responsive design

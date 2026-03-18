@@ -7,7 +7,7 @@ import { StoriesResponse } from '@/types';
 import FeedTabs from './FeedTabs';
 import StoryList from './StoryList';
 import Pagination from './Pagination';
-import LoadingSpinner from './LoadingSpinner';
+import SkeletonCard from './SkeletonCard';
 
 export default function Feed() {
   const router = useRouter();
@@ -35,9 +35,10 @@ export default function Feed() {
   return (
     <>
       <FeedTabs />
-      {loading && <LoadingSpinner />}
       {error && <p className="text-red-400 text-sm py-4">{error}</p>}
-      {data && (
+      {loading ? (
+        <div>{Array.from({ length: 10 }).map((_, i) => <SkeletonCard key={i} />)}</div>
+      ) : data ? (
         <>
           <StoryList stories={data.stories} startIndex={(page - 1) * 20 + 1} />
           <Pagination
@@ -46,7 +47,7 @@ export default function Feed() {
             onNavigate={(p) => router.push(`/?type=${type}&page=${p}`)}
           />
         </>
-      )}
+      ) : null}
     </>
   );
 }

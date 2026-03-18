@@ -1,3 +1,41 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.comment-body p {
+  margin-bottom: 0.5rem;
+}
+
+.comment-body p:last-child {
+  margin-bottom: 0;
+}
+
+.comment-body a {
+  color: #f97316;
+  text-decoration: underline;
+  word-break: break-all;
+}
+
+.comment-body a:hover {
+  color: #ea580c;
+}
+
+.comment-body pre {
+  background: #f3f4f6;
+  border-radius: 4px;
+  padding: 0.5rem 0.75rem;
+  overflow-x: auto;
+  font-size: 0.8rem;
+  margin: 0.5rem 0;
+}
+
+.comment-body code {
+  background: #f3f4f6;
+  border-radius: 3px;
+  padding: 0.1rem 0.3rem;
+  font-size: 0.8rem;
+}
+
+.comment-body i {
+  font-style: italic;
+}

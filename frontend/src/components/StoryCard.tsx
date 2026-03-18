@@ -20,25 +20,28 @@ export default function StoryCard({ story, index, actions }: Props) {
         )}
         <div className="flex-1 min-w-0">
           <div className="flex items-start gap-2 flex-wrap">
-            <a
-              href={story.url || `https://news.ycombinator.com/item?id=${story.id}`}
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              href={`/story/${story.id}`}
               className="text-gray-900 hover:text-orange-500 text-sm font-medium leading-snug"
             >
               {story.title}
-            </a>
-            {domain && (
-              <span className="text-gray-400 text-xs mt-0.5 flex-shrink-0">({domain})</span>
+            </Link>
+            {domain && story.url && (
+              <a
+                href={story.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 text-xs mt-0.5 flex-shrink-0 hover:underline"
+              >
+                ({domain})
+              </a>
             )}
           </div>
           <div className="flex items-center gap-3 mt-1 text-xs text-gray-500 flex-wrap">
             <span>{story.score} pts</span>
             <span>by {story.by}</span>
             <span>{timeAgo(story.time)}</span>
-            <Link href={`/story/${story.id}`} className="hover:text-orange-500">
-              {story.descendants} comments
-            </Link>
+            <span>{story.descendants} comments</span>
             <BookmarkButton story={story} />
             {actions}
           </div>
