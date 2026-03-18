@@ -26,6 +26,13 @@ A Hacker News client with AI-powered discussion summaries. Browse stories, save 
 - ✅ Display key points, sentiment, and summary
 - ✅ Skeleton loading states for better UX
 - ✅ Improved comment tree UI with nested indentation and HTML support
+- ✅ Zod validation for all API inputs (bookmarks, summarize)
+- ✅ Rate limiting on summarize endpoint (5 requests/min per IP)
+- ✅ Structured error responses for validation failures
+- ✅ Centralized config (all env vars in one place)
+- ✅ Graceful shutdown on SIGTERM/SIGINT signals
+- ✅ Clean database disconnection on process termination
+- ✅ Health endpoint with DB connection status
 
 ## Quick Start
 
@@ -39,6 +46,7 @@ docker-compose up
 
 - **Frontend:** http://localhost:3000
 - **Backend API:** http://localhost:5000
+- **Health Check:** http://localhost:5000/health
 
 Get a free Gemini API key at https://aistudio.google.com
 
@@ -55,7 +63,7 @@ Get a free Gemini API key at https://aistudio.google.com
 ## Tech Stack
 
 - **Frontend:** Next.js 15 + TypeScript + Tailwind CSS + Lucide Icons
-- **Backend:** Express 5 + TypeScript
+- **Backend:** Express 5 + TypeScript + Zod + Rate Limiting
 - **Database:** MongoDB + Mongoose 9 (with text index for search)
 - **AI:** Google Gemini Flash
 - **Infrastructure:** Docker Compose
@@ -97,6 +105,16 @@ Get a free Gemini API key at https://aistudio.google.com
 - Skeleton loading states while AI processes
 - Display results in clean, readable format
 
+### Production Patterns
+
+- **Input Validation:** Zod schemas validate all API requests (bookmarks, summarize)
+- **Error Handling:** Structured 400 responses with validation error details
+- **Rate Limiting:** Protect summarize endpoint (5 requests/min per IP) against abuse and API quota drain
+- **Config Management:** Centralize all configuration (HN API URL, comment limits, rate limits) in env.ts
+- **Graceful Shutdown:** Clean server and database disconnection on SIGTERM/SIGINT
+- **Health Checks:** Endpoint reports server status and database connectivity
+- **Type Safety:** Full TypeScript coverage with type-safe Zod schemas
+
 ### UI/UX Improvements
 
 - Comment tree with collapsible threads
@@ -104,3 +122,32 @@ Get a free Gemini API key at https://aistudio.google.com
 - Nested indentation for easy reading
 - Skeleton loaders for all data fetching
 - Smooth transitions and responsive design
+
+## Environment Variables
+
+| Variable               | Default                                 | Description                             |
+| ---------------------- | --------------------------------------- | --------------------------------------- |
+| `PORT`                 | `5000`                                  | Backend server port                     |
+| `MONGO_URI`            | `mongodb://localhost:27017/hn-reader`   | MongoDB connection string               |
+| `GEMINI_API_KEY`       | —                                       | **Required.** Google AI Studio API key  |
+| `GEMINI_MODEL`         | `gemini-flash-lite-latest`              | Gemini model to use                     |
+| `FRONTEND_URL`         | `http://localhost:3000`                 | CORS allowed origin                     |
+| `NODE_ENV`             | `development`                           | Environment (development or production) |
+| `HN_BASE_URL`          | `https://hacker-news.firebaseio.com/v0` | Hacker News API endpoint                |
+| `COMMENT_MAX_DEPTH`    | `5`                                     | Max comment nesting depth to fetch      |
+| `COMMENT_TOP_LIMIT`    | `50`                                    | Max top-level comments per story        |
+| `COMMENT_NESTED_LIMIT` | `20`                                    | Max replies per comment                 |
+| `RATE_LIMIT_MAX`       | `5`                                     | Max summarize requests per window       |
+| `RATE_LIMIT_WINDOW_MS` | `60000`                                 | Rate limit window (milliseconds)        |
+
+## API Endpoints
+
+```
+GET  /health                             # Server status and DB connection
+GET  /api/hn/stories?type=top&page=1     # Paginated HN stories (top/new/best)
+GET  /api/hn/story/:id                   # Story with comment tree
+GET  /api/bookmarks?search=&page=1       # Search bookmarks with pagination
+POST /api/bookmarks                      # Save a bookmark
+DELETE /api/bookmarks/:hnId              # Remove a bookmark
+POST /api/summarize                      # AI summary (rate limited)
+```

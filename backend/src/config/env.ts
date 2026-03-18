@@ -2,7 +2,6 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-// all env vars live here - import from this file, never from process.env directly
 const env = {
   port: process.env.PORT || '5000',
   mongoUri: process.env.MONGO_URI || 'mongodb://localhost:27017/hn-reader',
@@ -10,6 +9,12 @@ const env = {
   geminiModel: process.env.GEMINI_MODEL || 'gemini-flash-lite-latest',
   frontendUrl: process.env.FRONTEND_URL || 'http://localhost:3000',
   nodeEnv: process.env.NODE_ENV || 'development',
+  hnBaseUrl: process.env.HN_BASE_URL || 'https://hacker-news.firebaseio.com/v0',
+  commentMaxDepth: parseInt(process.env.COMMENT_MAX_DEPTH || '5'),
+  commentTopLimit: parseInt(process.env.COMMENT_TOP_LIMIT || '50'),
+  commentNestedLimit: parseInt(process.env.COMMENT_NESTED_LIMIT || '20'),
+  rateLimitWindowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS || '60000'),
+  rateLimitMax: parseInt(process.env.RATE_LIMIT_MAX || '5'),
 };
 
 export default env;

@@ -1,6 +1,7 @@
 import { HnStory, HnComment } from '../types';
+import env from '../config/env';
 
-const HN_BASE = 'https://hacker-news.firebaseio.com/v0';
+const HN_BASE = env.hnBaseUrl;
 
 const feedMap: Record<string, string> = {
   top: 'topstories',
@@ -23,10 +24,9 @@ async function fetchStoryIds(type: string): Promise<number[]> {
 
 // fetch comments recursively, limit depth to avoid huge payloads
 async function fetchComments(ids: number[], depth = 0): Promise<HnComment[]> {
-  if (depth >= 2 || !ids?.length) return [];
+  if (depth >= env.commentMaxDepth || !ids?.length) return [];
 
-  // cap comments per level to avoid too many requests
-  const limited = ids.slice(0, depth === 0 ? 50 : 20);
+  const limited = ids.slice(0, depth === 0 ? env.commentTopLimit : env.commentNestedLimit);
   const items = await Promise.all(limited.map(fetchItem));
   const comments: HnComment[] = [];
 

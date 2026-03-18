@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import { summarizeStory } from '../controllers/summary.controller';
+import { summaryRateLimiter } from '../middleware/rateLimiter';
 
 const router = Router();
 
-// generate or return cached ai summary for a story
-router.post('/', summarizeStory);
+router.post('/', summaryRateLimiter, summarizeStory);
 
 export default router;

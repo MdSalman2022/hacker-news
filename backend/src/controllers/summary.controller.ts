@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { getStoryWithComments } from '../services/hn.service';
 import { aiProvider } from '../services/ai';
+import { summarizeSchema } from '../schemas';
 
 function flattenComments(comments: any[]): string[] {
   const texts: string[] = [];
@@ -13,12 +14,7 @@ function flattenComments(comments: any[]): string[] {
 
 export const summarizeStory = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { storyId } = req.body;
-
-    if (!storyId) {
-      res.status(400).json({ error: 'missing storyId' });
-      return;
-    }
+    const { storyId } = summarizeSchema.parse(req.body);
 
     const story = await getStoryWithComments(storyId);
     if (!story || !story.comments || story.comments.length === 0) {

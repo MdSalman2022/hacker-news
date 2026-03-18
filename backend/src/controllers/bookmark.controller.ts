@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import * as bookmarkService from '../services/bookmark.service';
+import { addBookmarkSchema } from '../schemas';
 
 export const getBookmarks = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -17,23 +18,11 @@ export const getBookmarks = async (req: Request, res: Response, next: NextFuncti
 
 export const addBookmark = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { hnId, title, url, author, points, commentCount, hnTime } = req.body;
-
-    if (!hnId || !title || !author || !hnTime) {
-      res.status(400).json({ error: 'missing required fields' });
-      return;
-    }
-
+    const data = addBookmarkSchema.parse(req.body);
     const bookmark = await bookmarkService.addBookmark({
-      hnId,
-      title,
-      url: url || null,
-      author,
-      points: points || 0,
-      commentCount: commentCount || 0,
-      hnTime,
+      ...data,
+      url: data.url ?? null,
     });
-
     res.status(201).json({ bookmark });
   } catch (err) {
     next(err);
