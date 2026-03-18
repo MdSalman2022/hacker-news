@@ -29,6 +29,12 @@ export interface StoryResponse {
   comments: Comment[];
 }
 
+export interface SummaryResult {
+  keyPoints: string[];
+  sentiment: 'positive' | 'negative' | 'mixed' | 'neutral';
+  summary: string;
+}
+
 export interface Bookmark extends Story {
   _id: string;
   hnId: number;

@@ -10,7 +10,7 @@ const env = {
   frontendUrl: process.env.FRONTEND_URL || 'http://localhost:3000',
   nodeEnv: process.env.NODE_ENV || 'development',
   hnBaseUrl: process.env.HN_BASE_URL || 'https://hacker-news.firebaseio.com/v0',
-  commentMaxDepth: parseInt(process.env.COMMENT_MAX_DEPTH || '5'),
+  commentMaxDepth: parseInt(process.env.COMMENT_MAX_DEPTH || '2'),
   commentTopLimit: parseInt(process.env.COMMENT_TOP_LIMIT || '50'),
   commentNestedLimit: parseInt(process.env.COMMENT_NESTED_LIMIT || '20'),
   rateLimitWindowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS || '60000'),

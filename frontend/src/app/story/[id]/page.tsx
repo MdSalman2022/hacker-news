@@ -5,7 +5,7 @@ import { use } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, Sparkles } from 'lucide-react';
 import { api } from '@/lib/api';
-import { StoryResponse } from '@/types';
+import { StoryResponse, SummaryResult } from '@/types';
 import { timeAgo, getDomain } from '@/lib/utils';
 import Header from '@/components/Header';
 import CommentTree from '@/components/CommentTree';
@@ -20,7 +20,7 @@ export default function StoryPage({ params }: Props) {
   const [data, setData] = useState<StoryResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [summary, setSummary] = useState<any>(null);
+  const [summary, setSummary] = useState<SummaryResult | null>(null);
   const [summaryLoading, setSummaryLoading] = useState(false);
   const [summaryError, setSummaryError] = useState<string | null>(null);
 
@@ -36,10 +36,10 @@ export default function StoryPage({ params }: Props) {
     setSummaryLoading(true);
     setSummaryError(null);
     try {
-      const result = await api.post('/api/summarize', { storyId: parseInt(id) });
+      const result = await api.post<SummaryResult>('/api/summarize', { storyId: parseInt(id) });
       setSummary(result);
-    } catch (err: any) {
-      setSummaryError(err.message || 'failed to summarize');
+    } catch (err) {
+      setSummaryError(err instanceof Error ? err.message : 'failed to summarize');
     } finally {
       setSummaryLoading(false);
     }
