@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { api } from '@/lib/api';
 import { StoriesResponse } from '@/types';
 import FeedTabs from './FeedTabs';
@@ -10,6 +10,7 @@ import Pagination from './Pagination';
 import LoadingSpinner from './LoadingSpinner';
 
 export default function Feed() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const type = searchParams.get('type') || 'top';
   const page = parseInt(searchParams.get('page') || '1');
@@ -42,7 +43,7 @@ export default function Feed() {
           <Pagination
             page={page}
             totalPages={data.totalPages}
-            buildUrl={(p) => `/?type=${type}&page=${p}`}
+            onNavigate={(p) => router.push(`/?type=${type}&page=${p}`)}
           />
         </>
       )}

@@ -15,6 +15,11 @@ A Hacker News client with AI-powered discussion summaries. Browse stories, save 
 - ✅ HN Feed (top/new/best stories with pagination)
 - ✅ Story list (title, points, author, time ago, comment count)
 - ✅ Nested comment tree with collapse/expand
+- ✅ Bookmark model (Mongoose schema with text index)
+- ✅ Bookmark CRUD operations (save, remove, search)
+- ✅ BookmarkContext for global state management
+- ✅ Optimistic UI updates for bookmarks
+- ✅ Bookmarks page with search and pagination
 
 ## Quick Start
 
@@ -36,15 +41,16 @@ Get a free Gemini API key at https://aistudio.google.com
 - ✅ Browse HN stories (top, new, best)
 - ✅ Paginated story feed
 - ✅ Click story to see full threaded comments
-- [ ] Bookmarks
+- ✅ Save/remove bookmarks
+- ✅ View bookmarked stories
+- ✅ Search bookmarks by title or author
 - [ ] AI summaries
-- [ ] Search
 
 ## Tech Stack
 
-- **Frontend:** Next.js 15 + TypeScript + Tailwind CSS
+- **Frontend:** Next.js 15 + TypeScript + Tailwind CSS + Lucide Icons
 - **Backend:** Express 5 + TypeScript
-- **Database:** MongoDB + Mongoose 9
+- **Database:** MongoDB + Mongoose 9 (with text index for search)
 - **Infrastructure:** Docker Compose
 - **Code Quality:** Prettier
 
@@ -64,3 +70,13 @@ Get a free Gemini API key at https://aistudio.google.com
                          │   Firebase API  │
                          └─────────────────┘
 ```
+
+## Key Features Implemented
+
+### Bookmarking System
+
+- Save stories to MongoDB with unique hnId index
+- Full-text search across title and author
+- Optimistic UI (bookmarks save instantly in UI, revert if API fails)
+- Dedicated bookmarks page with pagination
+- Search debouncing for performance

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Story } from '@/types';
 import { timeAgo, getDomain } from '@/lib/utils';
+import BookmarkButton from './BookmarkButton';
 
 interface Props {
   story: Story;
@@ -38,6 +39,7 @@ export default function StoryCard({ story, index, actions }: Props) {
             <Link href={`/story/${story.id}`} className="hover:text-orange-500">
               {story.descendants} comments
             </Link>
+            <BookmarkButton story={story} />
             {actions}
           </div>
         </div>
