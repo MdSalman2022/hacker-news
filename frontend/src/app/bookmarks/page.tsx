@@ -8,6 +8,7 @@ import SearchBar from '@/components/SearchBar';
 import StoryList from '@/components/StoryList';
 import Pagination from '@/components/Pagination';
 import SkeletonCard from '@/components/SkeletonCard';
+import { useBookmarks } from '@/context/BookmarkContext';
 
 interface BookmarksResponse {
   bookmarks: {
@@ -25,6 +26,7 @@ interface BookmarksResponse {
 }
 
 export default function BookmarksPage() {
+  const { bookmarkedIds } = useBookmarks();
   const [data, setData] = useState<BookmarksResponse | null>(null);
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
@@ -48,16 +50,18 @@ export default function BookmarksPage() {
   };
 
   const stories: Story[] =
-    data?.bookmarks.map((b) => ({
-      id: b.hnId,
-      title: b.title,
-      url: b.url,
-      by: b.author,
-      score: b.points,
-      descendants: b.commentCount,
-      time: b.hnTime,
-      type: 'story',
-    })) || [];
+    data?.bookmarks
+      .filter((b) => bookmarkedIds.has(b.hnId))
+      .map((b) => ({
+        id: b.hnId,
+        title: b.title,
+        url: b.url,
+        by: b.author,
+        score: b.points,
+        descendants: b.commentCount,
+        time: b.hnTime,
+        type: 'story',
+      })) || [];
 
   return (
     <>
