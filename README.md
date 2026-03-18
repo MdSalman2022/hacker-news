@@ -1,4 +1,4 @@
-# Hacker News Reader
+# Smart Hacker News Reader
 
 A Hacker News client with AI-powered discussion summaries. Browse stories, save bookmarks, and get instant AI summaries of comment threads using Google Gemini.
 
@@ -12,6 +12,9 @@ A Hacker News client with AI-powered discussion summaries. Browse stories, save 
 - ✅ Multi-stage Docker builds for production
 - ✅ Prettier formatting for frontend and backend
 - ✅ Docker environment configuration (per-service env files)
+- ✅ HN Feed (top/new/best stories with pagination)
+- ✅ Story list (title, points, author, time ago, comment count)
+- ✅ Nested comment tree with collapse/expand
 
 ## Quick Start
 
@@ -27,6 +30,15 @@ docker-compose up
 - **Backend API:** http://localhost:5000
 
 Get a free Gemini API key at https://aistudio.google.com
+
+## Features
+
+- ✅ Browse HN stories (top, new, best)
+- ✅ Paginated story feed
+- ✅ Click story to see full threaded comments
+- [ ] Bookmarks
+- [ ] AI summaries
+- [ ] Search
 
 ## Tech Stack
 
@@ -44,4 +56,11 @@ Get a free Gemini API key at https://aistudio.google.com
 │   (Frontend)    │─────▶│   (Backend)     │─────▶│   (Database)    │
 │   Port 3000     │      │   Port 5000     │      │   Port 27017    │
 └─────────────────┘      └─────────────────┘      └─────────────────┘
+                                  │
+                                  │ HTTPS
+                                  ▼
+                         ┌─────────────────┐
+                         │   Hacker News   │
+                         │   Firebase API  │
+                         └─────────────────┘
 ```
