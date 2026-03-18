@@ -10,6 +10,8 @@ A Hacker News client with AI-powered discussion summaries. Browse stories, save 
 - ✅ MongoDB + Mongoose 9 setup
 - ✅ Docker Compose (mongo, backend, frontend services)
 - ✅ Multi-stage Docker builds for production
+- ✅ Prettier formatting for frontend and backend
+- ✅ Docker environment configuration (per-service env files)
 
 ## Quick Start
 
@@ -19,4 +21,27 @@ cd smart-hn-reader
 cp backend/.env.example backend/.env
 # Edit backend/.env and set GEMINI_API_KEY=your_key_here
 docker-compose up
+```
+
+- **Frontend:** http://localhost:3000
+- **Backend API:** http://localhost:5000
+
+Get a free Gemini API key at https://aistudio.google.com
+
+## Tech Stack
+
+- **Frontend:** Next.js 15 + TypeScript + Tailwind CSS
+- **Backend:** Express 5 + TypeScript
+- **Database:** MongoDB + Mongoose 9
+- **Infrastructure:** Docker Compose
+- **Code Quality:** Prettier
+
+## Architecture
+
+```
+┌─────────────────┐      ┌─────────────────┐      ┌─────────────────┐
+│   Next.js 15    │ HTTP │   Express 5     │      │   MongoDB 7     │
+│   (Frontend)    │─────▶│   (Backend)     │─────▶│   (Database)    │
+│   Port 3000     │      │   Port 5000     │      │   Port 27017    │
+└─────────────────┘      └─────────────────┘      └─────────────────┘
 ```

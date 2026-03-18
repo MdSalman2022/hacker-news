@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   mongo:
     image: mongo:7
@@ -19,12 +17,10 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5000:5000"
+    env_file: ./backend/.env
     environment:
-      - PORT=5000
+      # override mongo uri to use container name instead of localhost
       - MONGO_URI=mongodb://mongo:27017/hn-reader
-      - GEMINI_API_KEY=${GEMINI_API_KEY}
-      - GEMINI_MODEL=${GEMINI_MODEL:-gemini-2.5-flash}
-      - FRONTEND_URL=http://localhost:3000
       - NODE_ENV=production
     depends_on:
       mongo:
@@ -37,8 +33,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
-    environment:
-      - NEXT_PUBLIC_API_URL=http://localhost:5000
+    env_file: ./frontend/.env.local
     depends_on:
       - backend
     restart: unless-stopped
